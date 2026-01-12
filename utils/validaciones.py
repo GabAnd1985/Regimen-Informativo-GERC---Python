@@ -115,7 +115,7 @@ def validar_archivos_existen():
         
         control_a= "DEUDORES {}".format(fec_def)
         
-        control_b= "Inputs Manual {}".format(fec_def)
+        control_b= "Input Manual {}".format(fec_def)
         
         control_c= "Sector Público {}".format(fec_def)
         

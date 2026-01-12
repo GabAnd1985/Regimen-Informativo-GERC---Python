@@ -47,7 +47,7 @@ def Reserva_SQL_Func(df, path_input, fec):
     
     fec_1= fec[3:7] + fec[0:2] 
     
-    db= sqlite3.connect("{}/Bases/Deudores_{}.db".format(path_input, fec_1))
+    db= sqlite3.connect("{}/Deudores_{}.db".format(path_input, fec_1))
     
     df_4305.to_sql('d4305', db, index=False, if_exists='replace')
     

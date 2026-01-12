@@ -1,9 +1,8 @@
 
 import pandas as pd
 from utils.paths import definir_ruta_func
-from utils.paths import validar_archivos_existen
+from utils.validaciones import validar_archivos_existen
 from importar.parsear_deudores import Reserva_SQL_Func
-from importar.deposito_acuerdos import Deposito_Acuerdos_Func
 import pyreadstat
 import sys
 import numpy as np
@@ -17,16 +16,18 @@ import numpy as np
 
 def importar_deudores_func(path, fec):
     
-    path_deudores= path / "Inputs" / "Deudores"
+    path_inputs_deudores= path / "Inputs" / "Deudores"
+
+    path_bases_deudores= path / "Bases" / "Deudores"
     
     name= list(range(29))
                     
-    df= pd.read_table("{}/DEUDORES {}.txt".format(path_deudores, fec), names= name , sep= ";", encoding='latin-1',
+    df= pd.read_table("{}/DEUDORES {}.txt".format(path_inputs_deudores, fec), names= name , sep= ";", encoding='latin-1',
                                   dtype={3: str}) 
     
     fec_format= fec[3:7] + fec[0:2]
     
-    Reserva_SQL_Func(df, path_deudores, fec_format)
+    Reserva_SQL_Func(df, path_bases_deudores, fec_format)
 
     return 
 
@@ -87,7 +88,7 @@ def TC_Sdo_No_Usado_Func(fec):
     
         print("\nSe cierra el aplicativo.")
     
-        input("\Presione 'Enter' para salir...")    
+        input("\nPresione 'Enter' para salir...")    
     
         sys.exit()
     
@@ -95,11 +96,15 @@ def TC_Sdo_No_Usado_Func(fec):
     
     TC_3= TC_2[TC_2["agrup_1"]== "Tarjeta de Crédito"]
     
-    TC_4= TC_3[TC_3["agrup_0"]!= "TC cumplimiento Irregular"]
+    TC_4a= TC_3[TC_3["agrup_0"]!= "TC cumplimiento Irregular"]
+    
+    TC_4= TC_4a.copy()
     
     TC_4["id_cliente"]= TC_4["id_cliente"].astype("int64")
     
-    TC_5= TC_4[TC_4["limite"] > 0]
+    TC_5a= TC_4[TC_4["limite"] > 0]
+    
+    TC_5= TC_5a.copy()
     
     TC_5["TC_Incorporar_1"]= TC_5["limite"] - TC_5["sal_total"]
     
@@ -122,19 +127,21 @@ def TC_Sdo_No_Usado_Func(fec):
 #-------------------------------------------------------------------
 
 
-fec_def= validar_archivos_existen()
+def main():
 
-ruta_bases= definir_ruta_func()
-
-importar_deudores_func(ruta_bases, fec_def)
-
-Input_Manual= importar_input_manual(ruta_bases, fec_def)
-
-SP, lim_TC_SP= importar_sp_func(ruta_bases, fec_def)
-
-TC_Sdo_No_Usado= TC_Sdo_No_Usado_Func(fec_def)
-
-Deposito_Acuerdos_Func(ruta_bases, fec_def)
+    fec_def= validar_archivos_existen()
+    
+    ruta_bases= definir_ruta_func()
+    
+    importar_deudores_func(ruta_bases, fec_def)
+    
+    Input_Manual= importar_input_manual(ruta_bases, fec_def)
+    
+    SP, lim_TC_SP= importar_sp_func(ruta_bases, fec_def)
+    
+    TC_Sdo_No_Usado= TC_Sdo_No_Usado_Func(fec_def)
+    
+    return Input_Manual, TC_Sdo_No_Usado
 
 
 #-------------------------------------------------------------------
@@ -143,7 +150,8 @@ Deposito_Acuerdos_Func(ruta_bases, fec_def)
 #-------------------------------------------------------------------
 
 
-
+if __name__ == "__main__":
+    main()
 
 
 

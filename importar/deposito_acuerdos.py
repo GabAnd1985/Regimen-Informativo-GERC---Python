@@ -2,7 +2,8 @@
 import pandas as pd
 import numpy as np
 import sqlite3
-
+from utils.paths import definir_ruta_func
+from utils.validaciones import validar_archivos_existen
 
 #-----------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------
@@ -12,7 +13,7 @@ import sqlite3
 
 def ACMAC_tabla_func(path, fec):
 
-    df_1= pd.read_table("{}/Inputs/Acuerdos/ACMAC_{}.txt".format(path, fec), 
+    df_1= pd.read_table("{}/Inputs/Acuerdos/ACMAC {}.txt".format(path, fec), 
                         names= ["Tipo", "Moneda", "Sucursal", "Producto", "Cuenta", "Acuerdo", "Estado", "Digito", "Fecha_Inicio",
                                 "Vto_Acuerdo", "Monto_Acuerdo"], sep= "~", 
                         usecols= [1, 2, 3, 4, 5, 6, 9, 12, 16, 20, 28])
@@ -47,7 +48,7 @@ def cruce_ACMOL_func(path, fec):
 
     ACMAC_tabla_temp= ACMAC_tabla_func(path, fec)
 
-    df_1= pd.read_table("{}/Inputs/Acuerdos/ACMOL_{}.txt".format(path, fec), 
+    df_1= pd.read_table("{}/Inputs/Acuerdos/ACMOL {}.txt".format(path, fec), 
                         names= ["Moneda", "Sucursal", "Producto", "Cuenta", "DigVerificador", "NroSFB"], sep= "~", 
                         usecols= [1, 2, 3, 4, 59, 172], encoding='latin-1')
     
@@ -70,7 +71,7 @@ def Deposito_Acuerdos_Func(path, fec):
 
     Tabla= cruce_ACMOL_func(path, fec)
 
-    db = sqlite3.connect("{}/Bases/ACMAC_{}.db".format(path, fec))
+    db = sqlite3.connect("{}/Bases/Acuerdos/ACMAC_{}.db".format(path, fec))
     
     Tabla.to_sql('ACMAC', db, index=False, if_exists='replace')
     
@@ -85,9 +86,25 @@ def Deposito_Acuerdos_Func(path, fec):
 #-----------------------------------------------------------------------------------------
 
 
+def main():
+    
+    fec_def= validar_archivos_existen()
+    
+    ruta_bases= definir_ruta_func()
+
+    Deposito_Acuerdos_Func(ruta_bases, fec_def)
+    
+    return
 
 
+#-------------------------------------------------------------------
+#-------------------------------------------------------------------
+#-------------------------------------------------------------------
+#-------------------------------------------------------------------
 
+
+if __name__ == "__main__":
+    main()
 
 
 
