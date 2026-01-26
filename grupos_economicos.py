@@ -9,6 +9,7 @@ from datetime import datetime
 from tabulate import tabulate
 from opciones import opciones_ge
 
+
 #-----------------------------------------------------------------------
 #-----------------------------------------------------------------------
 #-----------------------------------------------------------------------
@@ -26,8 +27,7 @@ def crear_tabla_maestro_grupos():
         denominacion    TEXT    NOT NULL,
         codigo_grupo    INTEGER NOT NULL,
         orden           INTEGER NOT NULL CHECK (orden IN (0,1)),
-        UNIQUE (cuit, codigo_grupo)
-        UNIQUE (codigo_grupo, orden)
+        UNIQUE (cuit, codigo_grupo, orden)
     );
     """
 

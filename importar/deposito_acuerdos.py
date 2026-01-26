@@ -3,7 +3,8 @@ import pandas as pd
 import numpy as np
 import sqlite3
 from utils.paths import definir_ruta_func
-from utils.validaciones import validar_archivos_existen
+from solicitudes_usuario import validar_archivos_existen
+
 
 #-----------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------
@@ -71,7 +72,9 @@ def Deposito_Acuerdos_Func(path, fec):
 
     Tabla= cruce_ACMOL_func(path, fec)
 
-    db = sqlite3.connect("{}/Bases/Acuerdos/ACMAC_{}.db".format(path, fec))
+    fec_1= fec[3:7] + fec[0:2] 
+
+    db = sqlite3.connect("{}/Bases/Acuerdos/ACMAC_{}.db".format(path, fec_1))
     
     Tabla.to_sql('ACMAC', db, index=False, if_exists='replace')
     

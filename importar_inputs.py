@@ -1,7 +1,7 @@
 
 import pandas as pd
 from utils.paths import definir_ruta_func
-from utils.validaciones import validar_archivos_existen
+from solicitudes_usuario import validar_archivos_existen
 from importar.parsear_deudores import Reserva_SQL_Func
 import pyreadstat
 import sys
@@ -25,9 +25,7 @@ def importar_deudores_func(path, fec):
     df= pd.read_table("{}/DEUDORES {}.txt".format(path_inputs_deudores, fec), names= name , sep= ";", encoding='latin-1',
                                   dtype={3: str}) 
     
-    fec_format= fec[3:7] + fec[0:2]
-    
-    Reserva_SQL_Func(df, path_bases_deudores, fec_format)
+    Reserva_SQL_Func(df, path_bases_deudores, fec)
 
     return 
 
@@ -64,6 +62,25 @@ def importar_sp_func(path, fec):
     lim_TC_SP= pd.read_excel("{}/Sector Público {}.xlsx".format(path_SP, fec), "Lim No Util Tarjetas")
 
     return SP, lim_TC_SP
+
+
+#-------------------------------------------------------------------
+#-------------------------------------------------------------------
+#-------------------------------------------------------------------
+#-------------------------------------------------------------------
+
+
+def importar_RD_MP_func(path, fec):
+
+    path_manual= path / "Inputs" / "RD_MP"
+    
+    RD_MP_1= pd.read_table("{}/RD_MP {}.txt".format(path_manual, fec), sep= ";", header= None)
+    
+    RD_MP_2= RD_MP_1[[0, 1, 7]]
+    
+    RD_MP= RD_MP_2.rename(columns={0: 'NroSFB', 1: 'NOMBRE', 7: 'CUIT'})
+    
+    return RD_MP
 
 
 #-------------------------------------------------------------------
@@ -137,11 +154,13 @@ def main():
     
     Input_Manual= importar_input_manual(ruta_bases, fec_def)
     
+    RD_MP= importar_RD_MP_func(ruta_bases, fec_def)
+    
     SP, lim_TC_SP= importar_sp_func(ruta_bases, fec_def)
     
     TC_Sdo_No_Usado= TC_Sdo_No_Usado_Func(fec_def)
     
-    return Input_Manual, TC_Sdo_No_Usado
+    return Input_Manual, RD_MP, TC_Sdo_No_Usado
 
 
 #-------------------------------------------------------------------
