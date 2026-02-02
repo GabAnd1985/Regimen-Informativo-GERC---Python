@@ -1,0 +1,18 @@
+# ======================
+# SPYDER
+# ======================
+
+.spyproject/
+Inputs/
+Bases/
+Resultados/
+config/config_local.py
+
+# PyInstaller
+build/
+dist/
+*.spec
+
+# Python
+__pycache__/
+*.pyc  
