@@ -66,6 +66,39 @@ def validar_archivos_existen():
         
         for file in filelist_sp:
             newlist_sp.append(file[(len(path_sp) + 1):(len(path_sp) + len("Sector Público mm.yyyy") + 1)])
+
+        #-------------------------------------------------------------------------
+        
+        path_sp= "{}/Inputs/RD_MP".format(ruta_bases)
+        
+        filelist_sp= glob.glob("{}/*.txt".format(path_sp)) 
+        
+        newlist_sp= []
+        
+        for file in filelist_sp:
+            newlist_sp.append(file[(len(path_sp) + 1):(len(path_sp) + len("RD_MP mm.yyyy") + 1)])
+    
+        #-------------------------------------------------------------------------
+        
+        path_sp= "{}/Inputs/Acuerdos".format(ruta_bases)
+        
+        filelist_sp= glob.glob("{}/*.txt".format(path_sp)) 
+        
+        newlist_sp= []
+        
+        for file in filelist_sp:
+            newlist_sp.append(file[(len(path_sp) + 1):(len(path_sp) + len("ACMAC mm.yyyy") + 1)])
+            
+        #-------------------------------------------------------------------------
+        
+        path_sp= "{}/Inputs/Acuerdos".format(ruta_bases)
+        
+        filelist_sp= glob.glob("{}/*.txt".format(path_sp)) 
+        
+        newlist_sp= []
+        
+        for file in filelist_sp:
+            newlist_sp.append(file[(len(path_sp) + 1):(len(path_sp) + len("ACMOL mm.yyyy") + 1)])
     
         #-------------------------------------------------------------------------
         
@@ -74,6 +107,12 @@ def validar_archivos_existen():
         control_b= "Input Manual {}".format(fec_def)
         
         control_c= "Sector Público {}".format(fec_def)
+        
+        control_d= "RD_MP {}".format(fec_def)
+        
+        control_e= "ACMAC {}".format(fec_def)
+        
+        control_f= "ACMOL {}".format(fec_def)
         
         if control_a not in newlist_deudores:
             print("\nNo existe el archivo DEUDORES {}".format(fec_def))
@@ -84,7 +123,18 @@ def validar_archivos_existen():
         if control_c not in newlist_sp:
             print("\nNo existe el archivo Sector Público {}".format(fec_def))
             continue
-        
+        if control_d not in newlist_sp:
+            print("\nNo existe el archivo RD_MP {}".format(fec_def))
+            continue
+        if control_e not in newlist_sp:
+            print("\nNo existe el archivo RD_MP {}".format(fec_def))
+            continue
+        if control_f not in newlist_sp:
+            print("\nNo existe el archivo ACMAC {}".format(fec_def))
+            continue
+        if control_f not in newlist_sp:
+            print("\nNo existe el archivo ACMOL {}".format(fec_def))
+            continue
         break
 
     return fec_def

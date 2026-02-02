@@ -14,11 +14,13 @@ def opciones_principales_func():
                 
                 1) Correr GERC - Generar txt.
                 2) Administrar maestro de Grupos Económicos.
+                3) Administrar maestro de Clientes Financieros.
+                4) Salir.
                 """
     
     print(opciones)
     
-    eleccion= selector("Ingrese la opción que desea", 1,2)
+    eleccion= selector("Ingrese la opción que desea", 1, 4)
 
     return eleccion
 
@@ -38,10 +40,11 @@ def opciones_ge():
                 3) Exportar maestro.
                 4) importar un excel.
                 5) Ver la tabla.
+                6) Volver al menú anterior.
                 """
     
     print(opciones)
     
-    eleccion= selector("Ingrese la opción que desea", 1,5)
+    eleccion= selector("Ingrese la opción que desea", 1, 6)
     
     return eleccion
