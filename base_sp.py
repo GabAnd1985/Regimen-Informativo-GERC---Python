@@ -73,7 +73,7 @@ def deuda_tc_sp(path, fec):
 #------------------------------------------------------------------------
 
 
-def base_sp_func(lim_TC_SP, Deuda_TC_SP, SP):
+def base_sp_func(Cn1, lim_TC_SP, Deuda_TC_SP, SP):
 
     lim_TC_2= lim_TC_SP[lim_TC_SP["Limite"]!= 0]
     
@@ -113,8 +113,6 @@ def base_sp_func(lim_TC_SP, Deuda_TC_SP, SP):
     
     SP_4["NIVEL CONSOLID"]= 0
     
-    Cn1= int(solicitud_Cn1_func())
-    
     SP_4["TIPO DE EXPOSICIÓN"]= np.where(SP_4['EXPOSICIÓN BRUTA'] > (0.1 * Cn1), 2, 3)
     
     Base_SP_def= SP_4[["TIPO ID", "CODIGO", "DENOMINACION", "NIVEL CONSOLID", 
@@ -141,7 +139,9 @@ def main():
     
     Deuda_TC_SP= deuda_tc_sp(ruta_bases, fec_def)
     
-    Base_SP_def= base_sp_func(lim_TC_SP, Deuda_TC_SP, SP)
+    Cn1= int(solicitud_Cn1_func())
+    
+    Base_SP_def= base_sp_func(Cn1, lim_TC_SP, Deuda_TC_SP, SP)
     
     return Base_SP_def
 
